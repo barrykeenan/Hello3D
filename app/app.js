@@ -24,12 +24,19 @@ Hello3D.Views.App = Backbone.View.extend({
  	cubeMesh: null,
 
     initialize: function() {
-    	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+    	// set some camera attributes
+		var VIEW_ANGLE = 75,
+			ASPECT = window.innerWidth / window.innerHeight,
+			NEAR = 1,
+			FAR = 10000;
+    	this.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR );
+    	
+    	// the camera starts at 0,0,0 so pull it back
 	 	this.camera.position.z = 1000;
 
 	 	this.scene = new THREE.Scene();
 
-	 	this.renderer = new THREE.CanvasRenderer();
+	 	this.renderer = new THREE.WebGLRenderer();
 	 	this.renderer.setSize( window.innerWidth, window.innerHeight );
     },
 
@@ -45,6 +52,27 @@ Hello3D.Views.App = Backbone.View.extend({
 
 	 	this.cubeMesh = new THREE.Mesh( cubeGeometry, material );
 	 	this.scene.add( this.cubeMesh );
+
+		// create the sphere's material
+		var sphereMaterial = new THREE.MeshLambertMaterial({
+      		color: 0xCC0000
+    	});
+
+	 	// set up the sphere vars
+		var radius = 50,
+		    segments = 16,
+		    rings = 16;
+
+		// create a new mesh with
+		// sphere geometry - we will cover
+		// the sphereMaterial next!
+		var sphere = new THREE.Mesh(
+			new THREE.SphereGeometry(radius, segments, rings),
+			material
+		);
+
+		// add the sphere to the scene
+		this.scene.add(sphere);
     },
 
     animate: function() {
