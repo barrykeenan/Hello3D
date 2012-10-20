@@ -1,23 +1,16 @@
-// Load the application once the DOM is ready, using `jQuery.ready`:
-$(function(){
+// Use require js to load classes
 
 // global namespace for our app
-window.Hello3D = {
-	Models: {},
-	Controllers: {},
-	Views: {}
-};
-
-// Use require js to load classes
+window.Hello3D = {};
 
 /**
  * The app
  * 
  * @type {[type]}
  */
-Hello3D.Views.App = Backbone.View.extend({
+Hello3D.App = {
 
- 	camera: null,
+	camera: null,
  	scene: null,
  	renderer: null,
 
@@ -84,13 +77,12 @@ Hello3D.Views.App = Backbone.View.extend({
 
 	    this.renderer.render( this.scene, this.camera );
 	}
-  
-});
+};
 
-// Finally, we kick things off by creating the **App**.
-var app = new Hello3D.Views.App;
+var app = Hello3D.App;
+app.initialize();
 app.render();
 app.addProps();
 app.animate();
 
-});
+
