@@ -3,6 +3,19 @@
 // global namespace for our app
 window.Hello3D = {};
 
+Hello3D.MaterialFactory = {
+
+	basicMaterial: function() {
+		return new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+	},
+
+	otherMaterial: function() {
+		return new THREE.MeshLambertMaterial({
+      		color: 0xCC0000
+    	});
+	}
+};
+
 /**
  * The app
  * 
@@ -15,8 +28,18 @@ Hello3D.App = {
  	renderer: null,
 
  	cubeMesh: null,
+ 	materials: null,
 
-    initialize: function() {
+    initialize: function(materialFactory) {
+    	this.materials = materialFactory;
+	 	this.scene = new THREE.Scene();
+
+    	this.initCamera();
+	 	this.render();
+		this.addProps();
+    },
+
+    initCamera: function(){
     	// set some camera attributes
 		var VIEW_ANGLE = 75,
 			ASPECT = window.innerWidth / window.innerHeight,
@@ -26,30 +49,20 @@ Hello3D.App = {
     	
     	// the camera starts at 0,0,0 so pull it back
 	 	this.camera.position.z = 1000;
-
-	 	this.scene = new THREE.Scene();
-
-	 	this.renderer = new THREE.WebGLRenderer();
-	 	this.renderer.setSize( window.innerWidth, window.innerHeight );
     },
 
     render: function() {
-		document.body.appendChild( this.renderer.domElement );
+	 	this.renderer = new THREE.WebGLRenderer();
+	 	this.renderer.setSize( window.innerWidth, window.innerHeight );
 
-		return this;
+		document.body.appendChild( this.renderer.domElement );
     },
 
     addProps: function() {
 	 	var cubeGeometry = new THREE.CubeGeometry( 200, 200, 200 );
-	 	var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
-
-	 	this.cubeMesh = new THREE.Mesh( cubeGeometry, material );
+	 	
+	 	this.cubeMesh = new THREE.Mesh( cubeGeometry, this.materials.basicMaterial() );
 	 	this.scene.add( this.cubeMesh );
-
-		// create the sphere's material
-		var sphereMaterial = new THREE.MeshLambertMaterial({
-      		color: 0xCC0000
-    	});
 
 	 	// set up the sphere vars
 		var radius = 50,
@@ -61,7 +74,7 @@ Hello3D.App = {
 		// the sphereMaterial next!
 		var sphere = new THREE.Mesh(
 			new THREE.SphereGeometry(radius, segments, rings),
-			material
+			this.materials.otherMaterial()
 		);
 
 		// add the sphere to the scene
@@ -79,10 +92,10 @@ Hello3D.App = {
 	}
 };
 
+var materials = Hello3D.MaterialFactory;
+
 var app = Hello3D.App;
-app.initialize();
-app.render();
-app.addProps();
+app.initialize(materials);
 app.animate();
 
 
