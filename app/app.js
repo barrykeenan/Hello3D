@@ -16,14 +16,26 @@ Hello3D.world = {
 	},
 
 	addProps: function() {
-	 	var cubeGeometry = new THREE.CubeGeometry( 200, 200, 200 );	 	
-	 	this.cubeMesh = new THREE.Mesh( cubeGeometry, this.materials.basicMaterial() );
-	 	this.scene.add( this.cubeMesh );
+
+		var radiusTop = 50,
+			radiusBottom = 35,
+			height = 200, 
+			radiusSegments = 20,
+			heightSegments = 2,
+			openEnded = false;
+
+	 	var cylinder = new THREE.Mesh(
+	 		new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded),
+	 		this.materials.otherMaterial()
+	 	);
+        cylinder.overdraw = true;
+        cylinder.position.y = 100;
+        this.scene.add(cylinder);
 
 	 	// set up the sphere vars
-		var radius = 50,
-		    segments = 16,
-		    rings = 16;
+		var radius = 10,
+		    segments = 6,
+		    rings = 6;
 
 		var sphere1 = new THREE.Mesh(
 			new THREE.SphereGeometry(radius, segments, rings),
@@ -43,8 +55,8 @@ Hello3D.world = {
     },
 
     update: function() {
-    	this.cubeMesh.rotation.x += 0.02;
-	    this.cubeMesh.rotation.y += 0.04;
+    	// this.cubeMesh.rotation.x += 0.02;
+	    // this.cubeMesh.rotation.y += 0.04;
     }
 	
 };
