@@ -8,19 +8,26 @@ Hello3D.viewport = {
 	 */
 	renderer: null,
 
+	objects: [],
+
 	initialize: function(cfg) {
 
 		// TODO: use apply
 		this.containerEl = cfg.containerEl;
+		this.world = cfg.world;
+		this.animateFn = cfg.animateFn;
 
 		this.initContainer();
 		this.initRenderComponent();
 		
 		this.scene = new THREE.Scene();
+		this.world.scene = this.scene;
 		this.addSceneHelpers();
 
 		this.addCamera();
 		this.addLights();
+
+		this.world.addProps();
 
 		this.initControls(this.camera, this.containerEl);
 
@@ -125,12 +132,14 @@ Hello3D.viewport = {
 		// note: three.js includes requestAnimationFrame shim
 	    requestAnimationFrame( this.animate.bind(this) );
 
+		this.world.update();
+
 		this.controls.update();
+
+		this.render();
 	},
 
 	render: function() {
-		// console.log('render:', event);
-
 		this.sceneHelpers.updateMatrixWorld();
 		this.scene.updateMatrixWorld();
 
