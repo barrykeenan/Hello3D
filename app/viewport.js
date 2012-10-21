@@ -15,6 +15,7 @@ Hello3D.viewport = {
 		// TODO: use apply
 		this.containerEl = cfg.containerEl;
 		this.world = cfg.world;
+		this.materials = cfg.world.materials;
 		this.animateFn = cfg.animateFn;
 
 		this.initContainer();
@@ -27,6 +28,7 @@ Hello3D.viewport = {
 		this.addCamera();
 		this.addLights();
 
+		this.addProps();
 		this.world.addProps();
 
 		this.initControls(this.camera, this.containerEl);
@@ -127,6 +129,29 @@ Hello3D.viewport = {
 		light.position.set( - 1, - 0.5, 0 ).normalize();
 		this.scene.add( light );
 	},
+
+	addProps: function() {
+	 	// set up the sphere vars
+		var radius = 10,
+		    segments = 6,
+		    rings = 6;
+
+		var sphere1 = new THREE.Mesh(
+			new THREE.SphereGeometry(radius, segments, rings),
+			this.materials.otherMaterial()
+		);
+		sphere1.position.x = -200;
+
+		this.scene.add(sphere1);
+		
+		var sphere2 = new THREE.Mesh(
+			new THREE.SphereGeometry(radius, segments, rings),
+			this.materials.otherMaterial()
+		);
+		sphere2.position.x = 200;
+
+		this.scene.add(sphere2);
+    },
 		
 	animate: function() {
 		// note: three.js includes requestAnimationFrame shim

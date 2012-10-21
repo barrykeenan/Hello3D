@@ -17,6 +17,10 @@ Hello3D.world = {
 
 	addProps: function() {
 
+		this.pivot = new THREE.Object3D();
+		this.pivot.position.y = 200;
+		this.scene.add( this.pivot );
+
 		var radiusTop = 50,
 			radiusBottom = 35,
 			height = 200, 
@@ -24,39 +28,17 @@ Hello3D.world = {
 			heightSegments = 2,
 			openEnded = false;
 
-	 	var cylinder = new THREE.Mesh(
+	 	this.cylinder = new THREE.Mesh(
 	 		new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded),
 	 		this.materials.otherMaterial()
 	 	);
-        cylinder.overdraw = true;
-        cylinder.position.y = 100;
-        this.scene.add(cylinder);
-
-	 	// set up the sphere vars
-		var radius = 10,
-		    segments = 6,
-		    rings = 6;
-
-		var sphere1 = new THREE.Mesh(
-			new THREE.SphereGeometry(radius, segments, rings),
-			this.materials.otherMaterial()
-		);
-		sphere1.position.x = -200;
-
-		this.scene.add(sphere1);
-		
-		var sphere2 = new THREE.Mesh(
-			new THREE.SphereGeometry(radius, segments, rings),
-			this.materials.otherMaterial()
-		);
-		sphere2.position.x = 200;
-
-		this.scene.add(sphere2);
+        this.cylinder.overdraw = true;
+        this.cylinder.position.y = -100;
+        this.pivot.add(this.cylinder);
     },
 
     update: function() {
-    	// this.cubeMesh.rotation.x += 0.02;
-	    // this.cubeMesh.rotation.y += 0.04;
+	    this.pivot.rotation.z += 0.02;
     }
 	
 };
