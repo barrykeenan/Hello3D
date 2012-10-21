@@ -12,6 +12,9 @@ Hello3D.world = {
 	initialize: function(materialFactory){
 		this.materials = materialFactory;
 
+    	this.alpha = 0;
+    	this.increasing = true;
+
 		return this;
 	},
 
@@ -20,6 +23,7 @@ Hello3D.world = {
 		this.pivot = new THREE.Object3D();
 		this.pivot.position.y = 200;
 		this.scene.add( this.pivot );
+
 
 		var radiusTop = 50,
 			radiusBottom = 35,
@@ -38,7 +42,35 @@ Hello3D.world = {
     },
 
     update: function() {
-	    this.pivot.rotation.z += 0.02;
+
+    	// values between -1..0..1
+    	// or?
+    	// values between 0..1..0
+
+		var speed = 0.01;
+
+		if(this.increasing) {
+			if(this.alpha >= 1) {
+				this.increasing = false;
+			}
+			else{
+				this.alpha += speed;
+			}
+		}
+		else {
+			if(this.alpha <= -1) {
+				this.increasing = true;
+			}
+			else{
+				this.alpha -= speed;
+			}	
+		}
+		
+
+		// rotation in radians?
+		var rads = this.alpha * (Math.PI/4);
+
+	    this.pivot.rotation.z = rads;
     }
 	
 };
